@@ -71,10 +71,9 @@ int main()
 	}
 
 
-	int ps=0;
-	//double res=matchpair(fpv[82], fpv[83]);
-	for(int i =0; i < 100; i++)
+	for(int i =0; i < 5; i++)
 	{
+
 		vector<string> res;
 		vector<mr> mrv;
 		for(decltype(fpv.size()) j = 0; j < fpv.size(); j++)
@@ -84,20 +83,28 @@ int main()
 			tmr.score= matchpair(fpv[2*i], fpv[j]);
 			mrv.push_back(tmr);
 		}
-		sort(mrv.begin(),mrv.end(), cpmwithscore);
-		for(int j = 0; j < 330; j++)
+		string outpath = fpv[i].serial + ".txt";
+		ofstream output(outpath, ios::out);
+		if(!output)
 		{
-			res.push_back(mrv[j].serial);
+			cout << "打开文件失败！" << endl;
+			exit(1);
 		}
-		for(decltype(res.size()) j = 0; j < res.size(); j++)
+		for(decltype(mrv.size())j = 0; j < mrv.size(); j++)
 		{
-			if(res[j] == fpv[2*i + 1].serial)
+			if(mrv[i].score>0.9)
 			{
-				ps++;
-				break;
+				res.push_back(mrv[i].serial);
 			}
 		}
+		output << res.size() << ",";
+		for(decltype(res.size())j = 0; j < res.size(); j++)
+		{
+			output << res[i] << ",";
+		}
+		output << endl;
+
+		
 	}
-	cout << double(ps) << endl;
 	return 0;
 }
