@@ -32,16 +32,17 @@ int main()
 		string tmp;
 		int tx, ty, ttheta;
 		istringstream record(line);
-		record >> myfp.serial;
-		record >> tmp;
+		getline(record, tmp, ',');
+		myfp.serial=tmp;
+		getline(record, tmp, ',');
 		num = stoi(tmp);
 		for(int i = 0; i < num; i++)
 		{
-			record >> tmp;
+			getline(record, tmp, ',');
 			tx = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ty = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ttheta = stoi(tmp);
 			myfp.minu.push_back(Minutiae(tx, ty, ttheta));
 		}
@@ -54,16 +55,17 @@ int main()
 		string tmp;
 		int tx, ty, ttheta;
 		istringstream record(line);
-		record >> myfp.serial;
-		record >> tmp;
+		getline(record, tmp, ',');
+		myfp.serial = tmp;
+		getline(record, tmp, ',');
 		num = stoi(tmp);
 		for(int i = 0; i < num; i++)
 		{
-			record >> tmp;
+			getline(record, tmp, ',');
 			tx = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ty = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ttheta = stoi(tmp);
 			myfp.minu.push_back(Minutiae(tx, ty, ttheta));
 		}
@@ -72,8 +74,7 @@ int main()
 
 
 	int ps=0;
-	//double res=matchpair(fpv[82], fpv[83]);
-	for(int i =0; i < 100; i++)
+	for(int i =0; i < 50; i++)
 	{
 		vector<string> res;
 		vector<mr> mrv;
