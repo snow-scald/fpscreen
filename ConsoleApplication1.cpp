@@ -10,10 +10,11 @@
 using namespace std;
 
 int main()
-{	
+{
+
 	vector<fp> fpv;
 
-	ifstream infile1("TZ_同指.txt", ios::in);
+	ifstream infile1("TZ_同指200_乱序后_Data.txt", ios::in);
 	if(!infile1)
 	{
 		cout << "打开文件失败！" << endl;
@@ -32,16 +33,17 @@ int main()
 		string tmp;
 		int tx, ty, ttheta;
 		istringstream record(line);
-		record >> myfp.serial;
-		record >> tmp;
+		getline(record, tmp, ',');
+		myfp.serial = tmp;
+		getline(record, tmp, ',');
 		num = stoi(tmp);
 		for(int i = 0; i < num; i++)
 		{
-			record >> tmp;
+			getline(record, tmp, ',');
 			tx = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ty = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ttheta = stoi(tmp);
 			myfp.minu.push_back(Minutiae(tx, ty, ttheta));
 		}
@@ -54,24 +56,24 @@ int main()
 		string tmp;
 		int tx, ty, ttheta;
 		istringstream record(line);
-		record >> myfp.serial;
-		record >> tmp;
+		getline(record, tmp, ',');
+		myfp.serial = tmp;
+		getline(record, tmp, ',');
 		num = stoi(tmp);
 		for(int i = 0; i < num; i++)
 		{
-			record >> tmp;
+			getline(record, tmp, ',');
 			tx = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ty = stoi(tmp);
-			record >> tmp;
+			getline(record, tmp, ',');
 			ttheta = stoi(tmp);
 			myfp.minu.push_back(Minutiae(tx, ty, ttheta));
 		}
 		fpv.push_back(myfp);
 	}
 
-
-	for(int i =0; i < 5; i++)
+	for(int i = 0; i < 400; i++)
 	{
 
 		vector<string> res;
@@ -80,31 +82,55 @@ int main()
 		{
 			mr tmr;
 			tmr.serial = fpv[j].serial;
-			tmr.score= matchpair(fpv[2*i], fpv[j]);
+			tmr.score = matchpair(fpv[2 * i], fpv[j]);
 			mrv.push_back(tmr);
 		}
-		string outpath = fpv[i].serial + ".txt";
-		ofstream output(outpath, ios::out);
-		if(!output)
+		sort(mrv.begin(), mrv.end(), cpmwithscore);
+		string outpath1 = "result_90\\" + fpv[i].serial + ".txt";
+		ofstream output1(outpath1, ios::out);
+		if(!output1)
 		{
 			cout << "打开文件失败！" << endl;
 			exit(1);
 		}
-		for(decltype(mrv.size())j = 0; j < mrv.size(); j++)
+		string outpath2 = "result_95\\" + fpv[i].serial + ".txt";
+		ofstream output2(outpath2, ios::out);
+		if(!output2)
 		{
-			if(mrv[i].score>0.9)
-			{
-				res.push_back(mrv[i].serial);
-			}
+			cout << "打开文件失败！" << endl;
+			exit(1);
 		}
-		output << res.size() << ",";
+		string outpath3 = "result_97\\" + fpv[i].serial + ".txt";
+		ofstream output3(outpath3, ios::out);
+		if(!output3)
+		{
+			cout << "打开文件失败！" << endl;
+			exit(1);
+		}
+		int count = 0;
+		for(int j = 0; j < 1040; j++)
+		{
+			res.push_back(mrv[j].serial);
+		}
+		output1 << 1040 << ",";
+		output2 << 520 << ",";
+		output3 << 312 << ",";
 		for(decltype(res.size())j = 0; j < res.size(); j++)
 		{
-			output << res[i] << ",";
+			output1<< res[j] << ",";
 		}
-		output << endl;
+		output1 << endl;
+		for(decltype(res.size())j = 0; j < 520; j++)
+		{
+			output2 << res[j] << ",";
+		}
+		output2 << endl;
+		for(decltype(res.size())j = 0; j < 312; j++)
+		{
+			output3 << res[j] << ",";
+		}
+		output3 << endl;
 
-		
 	}
 	return 0;
 }
